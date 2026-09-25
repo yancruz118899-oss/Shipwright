@@ -21,13 +21,11 @@ jobs:
 
       - name: Fix Git Directory Permissions
         run: |
-          git config --global --add safe.directory /__w/Shipwright/Shipwright
           git config --global --add safe.directory '*'
 
-      - name: Sync and Update All Submodules
+      - name: Install Missing Switch Packages
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive --force
+          dkp-pacman -Sy --noconfirm switch-libzip switch-sdl2 switch-zlib switch-bzip2 switch-libpng
 
       - name: Configure CMake
         run: |
@@ -35,7 +33,7 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake \
             -DCMAKE_BUILD_TYPE=Release \
             -DPROJECT_BUILD_TYPE=Release \
-            -DNINTENDO_SWITCH=ON
+            -C /opt/devkitpro/cmake/Switch.cmake
 
       - name: Build Project
         run: |
