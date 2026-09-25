@@ -1,13 +1,14 @@
 #include <libultraship/libultraship.h>
 
 extern "C" {
-#include "z64player.h"
+#include "z64.h"
+#include "variables.h"
 }
 
 #define CVAR_CUSTOM_JUMP_ENABLED "gMods.CustomJump.Enabled"
 #define CVAR_CUSTOM_JUMP_BUTTON  "gMods.CustomJump.Button"
 
-static void CustomJump_OnPlayerUpdate(Player* player) {
+void CustomJump_OnPlayerUpdate(Player* player) {
     if (!CVarGetInteger(CVAR_CUSTOM_JUMP_ENABLED, 1) || player == NULL) {
         return;
     }
@@ -24,10 +25,7 @@ static void CustomJump_OnPlayerUpdate(Player* player) {
     }
 }
 
-struct CustomJumpInit {
-    CustomJumpInit() {
-        Ship::RegisterHook<Ship::OnPlayerUpdate>(CustomJump_OnPlayerUpdate);
-    }
-};
-
-static CustomJumpInit gCustomJumpInit;
+// Inicializador compatível com a Shipwright
+extern "C" void CustomJump_Init(void) {
+    // Inicialização da CVar
+}
