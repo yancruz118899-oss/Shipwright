@@ -1,4 +1,5 @@
 #include <libultraship/libultraship.h>
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "z64.h"
@@ -14,7 +15,6 @@ void CustomJump_OnPlayerUpdate(Player* player) {
         return;
     }
 
-    // Acesso correto aos inputs na versão recente do Shipwright
     Input* input = &gPlayState->state.input[0];
     uint32_t targetButton = CVarGetInteger(CVAR_CUSTOM_JUMP_BUTTON, BTN_L);
 
