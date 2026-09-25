@@ -14,7 +14,7 @@ jobs:
     container: devkitpro/devkita64:latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -35,7 +35,7 @@ jobs:
           cmake --build build-switch --config Release
 
       - name: Upload Switch Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: soh-switch
           path: |
