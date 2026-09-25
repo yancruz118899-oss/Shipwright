@@ -1,4 +1,3 @@
-#include "soh/Enhancements/game-interceptor/CommandManager.h"
 #include <libultraship/libultraship.h>
 
 extern "C" {
