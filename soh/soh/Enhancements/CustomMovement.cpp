@@ -1,6 +1,6 @@
 #include "global.h"
-#include "Enhancements/game-interactor/GameInteractor.h"
-#include "Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "game-interactor/GameInteractor.h"
+#include "game-interactor/GameInteractor_Hooks.h"
 
 #define CVAR_CUSTOM_MOVEMENT_ENABLED "gMods.CustomMovement.Enabled"
 #define CVAR_CUSTOM_MOVEMENT_JUMP_FORCE "gMods.CustomMovement.JumpForce"
