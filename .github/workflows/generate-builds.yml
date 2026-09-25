@@ -1,4 +1,14 @@
-build-switch:
+name: generate-builds
+
+on:
+  push:
+    branches: [ develop, main ]
+  pull_request:
+    branches: [ develop, main ]
+  workflow_dispatch:
+
+jobs:
+  build-switch:
     name: build-switch
     runs-on: ubuntu-latest
     container: devkitpro/devkita64:latest
@@ -8,11 +18,21 @@ build-switch:
         with:
           submodules: recursive
 
-      - name: Build SOH for Switch
+      - name: Install Dependencies
         run: |
-          mkdir build-switch && cd build-switch
-          cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DBUILD_SWITCH=ON ..
-          ninja
+          apt-get update && apt-get install -y cmake ninja-build git pkg-config python3
+
+      - name: Configure CMake
+        run: |
+          cmake -B build-switch -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake \
+            -C /opt/devkitpro/cmake/Switch.cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPROJECT_BUILD_TYPE=Release
+
+      - name: Build Project
+        run: |
+          cmake --build build-switch --config Release
 
       - name: Upload Switch Artifact
         uses: actions/upload-artifact@v3
