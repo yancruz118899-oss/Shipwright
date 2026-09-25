@@ -23,9 +23,23 @@ jobs:
         run: |
           git config --global --add safe.directory '*'
 
-      - name: Install Missing Switch Packages
+      - name: Build and Install libzip for Switch
         run: |
-          dkp-pacman -Sy --noconfirm switch-libzip switch-sdl2 switch-zlib switch-bzip2 switch-libpng
+          git clone https://github.com/nih-at/libzip.git --depth 1
+          cd libzip
+          cmake -B build -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake \
+            -DCMAKE_INSTALL_PREFIX=/opt/devkitpro/portlibs/switch \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DENABLE_COMMONCRYPTO=OFF \
+            -DENABLE_GNUTLS=OFF \
+            -DENABLE_MBEDTLS=OFF \
+            -DENABLE_OPENSSL=OFF \
+            -DBUILD_TOOLS=OFF \
+            -DBUILD_EXAMPLES=OFF \
+            -DBUILD_DOC=OFF
+          ninja -C build install
+          cd ..
 
       - name: Configure CMake
         run: |
@@ -33,7 +47,7 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake \
             -DCMAKE_BUILD_TYPE=Release \
             -DPROJECT_BUILD_TYPE=Release \
-            -C /opt/devkitpro/cmake/Switch.cmake
+            -DCMAKE_PREFIX_PATH=/opt/devkitpro/portlibs/switch
 
       - name: Build Project
         run: |
